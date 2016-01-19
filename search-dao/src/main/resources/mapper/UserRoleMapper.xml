@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.daimamingong.dao.RoleDao">
+    <resultMap type="com.daimamingong.model.system.UserRole" id="BaseUserRoleMap">
+        <result column="userRoleId" property="user_role_id" jdbcType="BIGINT"/>
+        <result column="userId" property="user_id" jdbcType="BIGINT"/>
+        <result column="roleId" property="role_id" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <!--批量添加角色用户关系-->
+    <insert id="addUserRoleBatch" parameterType="java.util.List" useGeneratedKeys="true" >
+        <selectKey resultType="long" keyProperty="roleUserId" order="AFTER">
+            <![CDATA[SELECT LAST_INSERT_ID() ]]>
+        </selectKey>
+        <![CDATA[ INSERT INTO t_user_role (`role_id`,`user_id`) VALUES ]]>
+        <foreach collection="list" item="item" index="index" separator="," >
+            <![CDATA[ (#{item.roleId},#{item.userId}) ]]>
+        </foreach>
+    </insert>
+
+    <!--删除用户角色对应信息-->
+    <delete id="deleteUserRole" parameterType="com.daimamingong.model.system.UserRole">
+        <![CDATA[ DELETE FROM t_user_role ]]>
+        <where>
+            <choose>
+                <when test="null != permissionId and 0 != permissionId">
+                    <![CDATA[ AND `user_id` = #{user_id} ]]>
+                </when>
+                <otherwise>
+                    <![CDATA[ AND `role_id` = #{roleId} ]]>
+                </otherwise>
+            </choose>
+        </where>
+    </delete>
+</mapper>

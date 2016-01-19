@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.daimamingong.dao.MailRecordsDao">
+
+    <resultMap type="com.daimamingong.model.mail.MailRecords" id="BaseMailRecordsMap">
+        <result property="mailRecordsId" column="mail_records_id" jdbcType="BIGINT"/>
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="code" column="code" jdbcType="VARCHAR"/>
+        <result property="mailType" column="mail_type" jdbcType="CHAR"/>
+        <result property="mailStatus" column="mail_status" jdbcType="CHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="createBy" column="create_by" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <!--用户查询条件SQL-->
+    <sql id="mail_records_sql_where">
+        <if test="null != code and '' != code">
+            <![CDATA[ AND `code` = #{code} ]]>
+        </if>
+        <if test="null != mailType and '' != mailType">
+            <![CDATA[ AND `mail_type` = #{mailType} ]]>
+        </if>
+        <if test="null != mailStatus and '' != mailStatus">
+            <![CDATA[ AND `mail_status` = #{mailStatus} ]]>
+        </if>
+    </sql>
+
+    <!-- 添加邮件发送记录 -->
+    <insert id="addMailRecords" parameterType="com.daimamingong.model.mail.MailRecords" useGeneratedKeys="true" keyProperty="id">
+        <![CDATA[
+            INSERT INTO
+                t_mail_records (`user_id`,`email`,`code`,`mail_type`,`mail_status`,create_by,create_time)
+            VALUES
+                (#{userId},#{email},#{code},#{mailType},#{mailStatus},#{createBy},NOW())
+        ]]>
+    </insert>
+
+    <!--获得邮件发送记录列表-->
+    <select id="getMailRecordsList" parameterType="com.daimamingong.model.mail.MailRecords" resultMap="BaseMailRecordsMap">
+        <![CDATA[
+			SELECT
+				`mail_records_id`,`user_id`,`email`,`code`,`mail_type`,`mail_status`,`create_by`,`create_time`
+			FROM
+				t_mail_records 
+		]]>
+        <where>
+            <include refid="mail_records_sql_where"/>
+        </where>
+        <![CDATA[ LIMIT #{startIndex},#{rows} ]]>
+    </select>
+
+    <!-- 获得邮件发送信息 -->
+    <select id="getMailRecords" parameterType="com.daimamingong.model.mail.MailRecords" resultMap="BaseMailRecordsMap">
+        <![CDATA[
+			SELECT
+				`mail_records_id`,`user_id`,`email`,`code`,`mail_type`,`mail_status`,`create_by`,`create_time`
+			FROM
+				t_mail_records
+		]]>
+        <where>
+            <include refid="mail_records_sql_where"/>
+        </where>
+    </select>
+
+    <!-- 修改邮件状态信息 -->
+    <update id="updateMailRecordsStatus" parameterType="com.daimamingong.model.mail.MailRecords">
+        <![CDATA[
+            UPDATE t_mail_records SET `mail_status` = #{mailStatus} WHERE `mail_records_id` = #{mailRecordsId}
+        ]]>
+    </update>
+
+</mapper>

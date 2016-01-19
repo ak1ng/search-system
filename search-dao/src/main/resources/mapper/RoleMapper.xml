@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.daimamingong.dao.RoleDao">
+    <resultMap type="com.daimamingong.model.system.Role" id="BaseRoleMap">
+        <result column="roleId" property="role_id" jdbcType="BIGINT"/>
+        <result column="roleName" property="role_name" jdbcType="VARCHAR"/>
+        <result column="roleDesc" property="role_desc" jdbcType="VARCHAR"/>
+        <result column="roleEnable" property="role_enable" jdbcType="CHAR"/>
+        <result column="roleKey" property="role_key" jdbcType="VARCHAR"/>
+        <result column="createBy" property="create_by" jdbcType="BIGINT"/>
+        <result column="createTime" property="create_time" jdbcType="TIMESTAMP"/>
+        <result column="updateBy" property="update_by" jdbcType="BIGINT"/>
+        <result column="updateTime" property="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="role_sql_where">
+        <if test="null != roleName and '' != roleName">
+            <![CDATA[ AND `role_name` LIKE CONCAT('%','${roleName}','%' )  ]]>
+        </if>
+        <if test="null != roleKey and '' != roleKey">
+            <![CDATA[ AND `role_key` = #{roleKey}  ]]>
+        </if>
+        <if test="null != roleEnable">
+            <![CDATA[ AND `role_enable` = #{roleEnable}  ]]>
+        </if>
+        <if test="null != roleDesc and '' != roleDesc">
+            <![CDATA[ AND `role_desc` = #{roleDesc}  ]]>
+        </if>
+    </sql>
+
+    <!-- 添加角色信息 -->
+    <insert id="addRole" parameterType="Role" useGeneratedKeys="true" keyProperty="roleId">
+        <![CDATA[
+            INSERT INTO
+                t_role (`role_name`,`role_desc`,`role_enable`,`role_key`,`create_by`,`create_time`)
+            VALUES
+                (#{roleName},#{roleDesc},#{roleEnable},#{roleKey},#{createBy},NOW())
+        ]]>
+    </insert>
+
+    <!--获得用户列表-->
+    <select id="getRoleList" parameterType="Role" resultMap="BaseRoleMap">
+        <![CDATA[
+			SELECT
+				`role_id`,
+				`role_name`,
+				`role_desc`,
+				`role_enable`,
+				`role_key`,
+				`create_by`,
+				`create_time`,
+				`update_by`,
+				`update_time`
+			FROM
+				t_role
+		]]>
+        <where>
+            <include refid="role_sql_where"/>
+        </where>
+        <if test="null != sidx and '' != sidx">
+            <![CDATA[ ORDER BY `${sidx}` ${sord} ]]>
+        </if>
+    </select>
+
+    <!-- 获得角色信息 -->
+    <select id="getRole" parameterType="Role" resultMap="BaseRoleMap">
+        <![CDATA[
+            SELECT
+				`role_id`,
+				`role_name`,
+				`role_desc`,
+				`role_enable`,
+				`role_key`,
+				`create_by`,
+				`create_time`,
+				`update_by`,
+				`update_time`
+			FROM
+				t_role
+			WHERE role_id = #{roleId}
+		]]>
+    </select>
+
+    <!-- 修改角色信息 -->
+    <update id="updateRole" parameterType="Role">
+        <![CDATA[ UPDATE t_role ]]>
+        <set>
+            <if test="roleName != null and '' != roleName">
+                <![CDATA[ `role_name` = #{roleName},]]>
+            </if>
+            <if test="roleDesc != null">
+                <![CDATA[ `role_desc` = #{roleDesc},]]>
+            </if>
+            <if test="roleEnable != null">
+                <![CDATA[ `role_enable` = #{roleEnable},]]>
+            </if>
+            <if test="roleKey != null and '' != roleKey">
+                <![CDATA[ `role_key` = #{roleKey},]]>
+            </if>
+            <![CDATA[ `update_by` = #{updateBy},]]>
+            <![CDATA[ `update_time` = NOW() ]]>
+        </set>
+        <where>
+            <![CDATA[ AND `role_id` = #{roleId} ]]>
+        </where>
+    </update>
+
+    <!--获得用户所有角色-->
+    <select id="getUserRoleList" parameterType="UserRole" resultMap="BaseRoleMap">
+        <![CDATA[
+            SELECT
+                `role_id`,
+				`role_name`,
+				`role_desc`,
+				`role_enable`,
+				`role_key`,
+				`create_by`,
+				`create_time`,
+				`update_by`,
+				`update_time`
+            FROM t_role t1
+            LEFT JOIN t_user_role t2 ON t1.role_id = t2.role_id
+            WHERE t2.`user_id` = #{userId}
+        ]]>
+    </select>
+</mapper>

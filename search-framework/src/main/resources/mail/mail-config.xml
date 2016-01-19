@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+    <!-- 申明SimpleMailMessage对象 -->
+    <bean id="mailMessage" class="org.springframework.mail.SimpleMailMessage">
+        <property name="from">
+            <!-- 设置发送方,Jack是发送者的名字 -->
+            <value><![CDATA[${mail.nickname}<${mail.from}>]]></value>
+        </property>
+        <!-- 设置接收方 -->
+        <!--<property name="to" value="${mail.to}"/>-->
+        <!-- 查看SimpleMailMessage源码还可以注入标题,内容等 -->
+    </bean>
+
+    <!-- 申明JavaMailSenderImpl对象 -->
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="host" value="${mail.host}"/>
+        <property name="port" value="${mail.port}"/>
+        <property name="username" value="${mail.username}"/>
+        <property name="password" value="${mail.password}"/>
+        <property name="javaMailProperties">
+            <props>
+                <!-- 设置认证开关 -->
+                <prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
+                <!-- 启动调试开关 -->
+                <prop key="mail.debug">${mail.debug}</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!--邮件发送类-->
+    <bean id="mailSenderUtils" class="com.daimamingong.framework.mail.MailSenderUtils">
+        <property name="mailSender">
+            <ref bean="mailSender"/>
+        </property>
+        <property name="mailMessage">
+            <ref bean="mailMessage"/>
+        </property>
+        <property name="templatePath" value="templates/"/>
+    </bean>
+</beans>

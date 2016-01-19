@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.daimamingong.dao.PermissionDao">
+    <resultMap type="com.daimamingong.model.system.Permission" id="BasePermissionMap">
+        <result column="permissionId" property="permission_id" jdbcType="BIGINT"/>
+        <result column="permissionName" property="permission_name" jdbcType="VARCHAR"/>
+        <result column="permissionParentId" property="permission_parent_id" jdbcType="BIGINT"/>
+        <result column="permissionUrl" property="permission_url" jdbcType="VARCHAR"/>
+        <result column="permissionIcon" property="permission_icon" jdbcType="VARCHAR"/>
+        <result column="isMenu" property="is_menu" jdbcType="CHAR"/>
+        <result column="permissionLevel" property="permission_level" jdbcType="TINYINT"/>
+        <result column="permissionKey" property="permission_key" jdbcType="VARCHAR"/>
+        <result column="permissionEnable" property="permission_enable" jdbcType="CHAR"/>
+        <result column="permissionDesc" property="permission_desc" jdbcType="VARCHAR"/>
+        <result column="createBy" property="create_by" jdbcType="BIGINT"/>
+        <result column="createTime" property="create_time" jdbcType="TIMESTAMP"/>
+        <result column="updateBy" property="update_by" jdbcType="BIGINT"/>
+        <result column="updateTime" property="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="permission_sql_where">
+        <if test="null != permissionName and '' != permissionName">
+            <![CDATA[ AND `permission_name` LIKE CONCAT('%','${permissionName}','%' )  ]]>
+        </if>
+        <if test="null != permissionEnable">
+            <![CDATA[ AND `permission_enable`= #{permissionEnable} ]]>
+        </if>
+        <if test="null != permissionKey and '' != permissionKey">
+            <![CDATA[ AND `permission_key` = #{permissionKey}  ]]>
+        </if>
+        <if test="null != isMenu">
+            <![CDATA[ AND `is_menu` = #{isMenu}  ]]>
+        </if>
+        <if test="null != permissionEnable">
+            <![CDATA[ AND `permission_enable` = #{permissionEnable}  ]]>
+        </if>
+    </sql>
+
+    <!-- 添加角色信息 -->
+    <insert id="addPermission" parameterType="com.daimamingong.model.system.Permission" useGeneratedKeys="true" keyProperty="permissionId">
+        <![CDATA[
+            INSERT INTO
+                t_permission (`permission_name`,`permission_parent_id`,`permission_url`,`permission_icon`,`is_menu`,`permission_level`,`permission_key`,`permission_enable`,`permission_desc`,`create_by`,`create_time`)
+            VALUES
+                (#{permissionName},#{permissionParentId},#{permissionUrl},#{permissionIcon},#{isMenu},#{permissionLevel},#{permissionKey},#{permissionEnable},#{permissionDesc},#{createBy},NOW())
+        ]]>
+    </insert>
+
+    <!--获得权限列表-->
+    <select id="getPermissionList" parameterType="com.daimamingong.model.system.Permission" resultMap="BasePermissionMap">
+        <![CDATA[
+			SELECT
+                `permission_id`,
+                `permission_name`,
+                `permission_parent_id`,
+                `permission_url`,
+                `permission_icon`,
+                `is_menu`,
+                `permission_level`,
+                `permission_key`,
+                `permission_enable`,
+                `permission_desc`,
+                `create_by`,
+                `create_time`,
+                `update_by`,
+                `update_time`
+            FROM
+                t_permission
+		]]>
+        <where>
+            <include refid="permission_sql_where"/>
+        </where>
+        <if test="null != sidx and '' != sidx">
+            <![CDATA[ ORDER BY `${sidx}` ${sord} ]]>
+        </if>
+    </select>
+
+    <!-- 获得权限信息 -->
+    <select id="getPermission" parameterType="com.daimamingong.model.system.Permission" resultMap="BasePermissionMap">
+        <![CDATA[
+			SELECT
+                `permission_id`,
+                `permission_name`,
+                `permission_parent_id`,
+                `permission_url`,
+                `permission_icon`,
+                `is_menu`,
+                `permission_level`,
+                `permission_key`,
+                `permission_enable`,
+                `permission_desc`,
+                `create_by`,
+                `create_time`,
+                `update_by`,
+                `update_time`
+            FROM
+                t_permission
+            WHERE
+                `permission_id` = #{permission_id}
+		]]>
+        <include refid="permission_sql_where"/>
+    </select>
+
+    <!-- 修改 -->
+    <update id="updatePermission" parameterType="com.daimamingong.model.system.Permission">
+        <![CDATA[ UPDATE t_permission ]]>
+        <set>
+            <if test="permission_name != null and '' != permission_name">
+                <![CDATA[ `permission_name` = #{permissionName},]]>
+            </if>
+            <if test="permission_parent_id != null and 0 != permission_parent_id">
+                <![CDATA[ `permission_parent_id` = #{permissionParentId},]]>
+            </if>
+            <if test="permission_url != null">
+                <![CDATA[ `permission_url` = #{permissionUrl},]]>
+            </if>
+            <if test="permission_icon != null">
+                <![CDATA[ `permission_icon` = #{permissionIcon},]]>
+            </if>
+            <if test="is_menu != null">
+                <![CDATA[ `is_menu` = #{isMenu},]]>
+            </if>
+            <if test="permission_key != null and '' != permission_key">
+                <![CDATA[ `permission_key` = #{permissionKey},]]>
+            </if>
+            <if test="permission_enable != null">
+                <![CDATA[ `permission_enable` = #{permissionEnable},]]>
+            </if>
+            <if test="permission_desc != null">
+                <![CDATA[ `permission_desc` = #{permissionDesc},]]>
+            </if>
+            <![CDATA[ `update_by` = #{updateBy},]]>
+            <![CDATA[ `update_time` = NOW(),]]>
+        </set>
+        <where>
+            <![CDATA[ AND `permission_id` = #{permissionId} ]]>
+        </where>
+    </update>
+
+    <!--获取多个角色对应的权限-->
+    <select id="getPermissionListByRoles" parameterType="java.util.List" resultMap="BasePermissionMap">
+        <![CDATA[
+			SELECT
+			    DISTINCT
+                t1.`permission_id`,
+                t1.`permission_name`,
+                t1.`permission_parent_id`,
+                t1.`permission_url`,
+                t1.`permission_icon`,
+                t1.`is_menu`,
+                t1.`permission_level`,
+                t1.`permission_key`,
+                t1.`permission_enable`,
+                t1.`permission_desc`,
+                t1.`create_by`,
+                t1.`create_time`,
+                t1.`update_by`,
+                t1.`update_time`
+            FROM
+                t_permission t1
+            LEFT JOIN t_role_permission t2  ON  t1.`permission_id` = t2.`permission_id`
+            LEFT JOIN t_role t3  ON t2.role_id = t3.`role_id`
+            WHERE t3.`role_id` IN
+		]]>
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            <![CDATA[[ #{item.roleId} ]]>
+        </foreach>
+    </select>
+
+    <!--获取用户所有权限-->
+    <select id="getPermissionListByUserId" parameterType="java.lang.Long" resultMap="BasePermissionMap">
+        <![CDATA[
+			SELECT
+			    DISTINCT
+                t1.`permission_id`,
+                t1.`permission_name`,
+                t1.`permission_parent_id`,
+                t1.`permission_url`,
+                t1.`permission_icon`,
+                t1.`is_menu`,
+                t1.`permission_level`,
+                t1.`permission_key`,
+                t1.`permission_enable`,
+                t1.`permission_desc`,
+                t1.`create_by`,
+                t1.`create_time`,
+                t1.`update_by`,
+                t1.`update_time`
+            FROM
+                t_permission t1
+            LEFT JOIN t_role_permission t2  ON  t1.`permission_id` = t2.`permission_id`
+            LEFT JOIN t_role t3  ON t2.`role_id` = t3.`role_id`
+            LEFT JOIN t_user_role t4 ON t3.`role_id` = t4.`role_id`
+            LEFT JOIN t_user t5 ON t4.user_id = t5.`user_id`
+            WHERE
+                t5.`user_id` = #{userId}
+		]]>
+    </select>
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/search-common/search-common.iml" filepath="$PROJECT_DIR$/search-common/search-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/search-dao/search-dao.iml" filepath="$PROJECT_DIR$/search-dao/search-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/search-framework/search-framework.iml" filepath="$PROJECT_DIR$/search-framework/search-framework.iml" />
+      <module fileurl="file://$PROJECT_DIR$/search-interfaces/search-interfaces.iml" filepath="$PROJECT_DIR$/search-interfaces/search-interfaces.iml" />
+      <module fileurl="file://$PROJECT_DIR$/search-model/search-model.iml" filepath="$PROJECT_DIR$/search-model/search-model.iml" />
+      <module fileurl="file://$PROJECT_DIR$/search-services/search-services.iml" filepath="$PROJECT_DIR$/search-services/search-services.iml" />
+      <module fileurl="file://$PROJECT_DIR$/search-system.iml" filepath="$PROJECT_DIR$/search-system.iml" />
+      <module fileurl="file://$PROJECT_DIR$/search-web/search-web.iml" filepath="$PROJECT_DIR$/search-web/search-web.iml" />
+    </modules>
+  </component>
+</project>

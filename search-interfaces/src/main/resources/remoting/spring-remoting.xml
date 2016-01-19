@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+    <bean name="/userService.hessian" class="org.springframework.remoting.caucho.HessianServiceExporter">
+        <property name="service" ref="userService"/>
+        <property name="serviceInterface" value="com.daimamingong.service.user.UserService"/>
+    </bean>
+
+    <bean name="/passportService.hessian" class="org.springframework.remoting.caucho.HessianServiceExporter">
+        <property name="service" ref="passportService"/>
+        <property name="serviceInterface" value="com.daimamingong.service.passport.PassportService"/>
+    </bean>
+
+    <bean name="/permissionService.hessian" class="org.springframework.remoting.caucho.HessianServiceExporter">
+        <property name="service" ref="permissionService"/>
+        <property name="serviceInterface" value="com.daimamingong.service.permission.PermissionService"/>
+    </bean>
+
+    <bean name="/roleService.hessian" class="org.springframework.remoting.caucho.HessianServiceExporter">
+        <property name="service" ref="roleService"/>
+        <property name="serviceInterface" value="com.daimamingong.service.role.RoleService"/>
+    </bean>
+
+</beans>
