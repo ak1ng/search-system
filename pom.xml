@@ -8,6 +8,7 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modelVersion>4.0.0</modelVersion>
+    <url>https://github.com/ak1ng/search-system</url>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -19,11 +20,11 @@
     <modules>
         <module>search-web</module>
         <module>search-dao</module>
-        <module>search-services</module>
+        <module>search-service</module>
         <module>search-common</module>
         <module>search-framework</module>
         <module>search-model</module>
-        <module>search-interfaces</module>
+        <module>search-interface</module>
     </modules>
 
     <properties>
