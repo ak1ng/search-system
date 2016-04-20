@@ -17,59 +17,19 @@
       <profile default="true" name="Default" enabled="false">
         <processorPath useClasspath="true" />
       </profile>
-      <profile default="false" name="Annotation profile for search-interfaces" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="search-interfaces" />
-      </profile>
-      <profile default="false" name="Annotation profile for search-model" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="search-model" />
-      </profile>
-      <profile default="false" name="Annotation profile for search-jobs" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-      </profile>
-      <profile default="false" name="Annotation profile for search-common" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="search-common" />
-      </profile>
-      <profile default="false" name="Annotation profile for search-framework" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="search-framework" />
-      </profile>
-      <profile default="false" name="Annotation profile for search-dao" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="search-dao" />
-      </profile>
-      <profile default="false" name="Annotation profile for search-services" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="search-services" />
-      </profile>
       <profile default="false" name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
+        <module name="search-common" />
+        <module name="search-dao" />
+        <module name="search-framework" />
+        <module name="search-interface" />
+        <module name="search-interfaces" />
+        <module name="search-model" />
+        <module name="search-service" />
+        <module name="search-services" />
         <module name="search-web" />
       </profile>
     </annotationProcessing>
@@ -77,9 +37,10 @@
       <module name="search-common" target="6" />
       <module name="search-dao" target="6" />
       <module name="search-framework" target="6" />
+      <module name="search-interface" target="6" />
       <module name="search-interfaces" target="6" />
-      <module name="search-jobs" target="6" />
       <module name="search-model" target="6" />
+      <module name="search-service" target="6" />
       <module name="search-services" target="6" />
       <module name="search-system" target="1.7" />
       <module name="search-web" target="1.7" />
